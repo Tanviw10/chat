@@ -60,9 +60,24 @@ public class SarvamAiService {
 	       List choice = (List) response.getBody().get("choices");
 	       
 	       Map firstChoice = (Map) choice.get(0);
+//	       Map message1 = (Map) firstChoice.get("message");
+//	       
+//	       return message1.get("content").toString();
 	       Map message1 = (Map) firstChoice.get("message");
-	       
-	       return message1.get("content").toString();
+
+	       Object content = message1.get("content");
+
+	       if (content != null) {
+	           return content.toString();
+	       }
+
+	       Object reasoning = message1.get("reasoning_content");
+
+	       if (reasoning != null) {
+	           return reasoning.toString();
+	       }
+
+	       return "No AI response generated.";
 	   }
 
 	
