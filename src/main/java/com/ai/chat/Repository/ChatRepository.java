@@ -10,8 +10,7 @@ import com.ai.chat.modules.ChatMessage;
 
 @Repository
 public interface ChatRepository extends JpaRepository<ChatMessage, Long>{
-	//List<ChatMessage> findByOrderCreatedAt(AppUser user);
-
+	
 	List<ChatMessage> findByUserOrderByCreatedAtAsc(AppUser user);
 
 }

@@ -19,8 +19,31 @@ import com.ai.chat.modules.AppUser;
 @Configuration
 public class SecurityConfig {
 	private final UserRepository user_repo;
-	public SecurityConfig(UserRepository ur) {
-		this.user_repo=ur;
+	public SecurityConfig(UserRepository user_repo) {
+		this.user_repo=user_repo;
+	}
+	
+	
+	@Bean
+	public UserDetailsService  userDetailsService(){
+		return username ->{
+			AppUser user = user_repo.findByUsername(username)
+					.orElseThrow(()-> new UsernameNotFoundException("User not Found"));
+			
+				return org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).roles("USER").build();
+		};
+	}
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider provider =new DaoAuthenticationProvider(userDetailsService());
+		//provider.setUserDetailsPasswordService(userDetailsService());
+		provider.setPasswordEncoder(passwordEncoder());
+		
+		return provider;
 	}
 	
 	@Bean
@@ -48,28 +71,6 @@ public class SecurityConfig {
 
 	    return http.build();
 	   }
-
-	@Bean
-	public UserDetailsService  userDetailsService(){
-		return username ->{
-			AppUser user = user_repo.findByUsername(username)
-					.orElseThrow(()-> new UsernameNotFoundException("User not Found"));
-			
-				return org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).roles("USER").build();
-		};
-	}
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider provider =new DaoAuthenticationProvider(userDetailsService());
-		//provider.setUserDetailsPasswordService(userDetailsService());
-		provider.setPasswordEncoder(passwordEncoder());
-		
-		return provider;
-	}
 	
 	  @Bean
 	    public WebMvcConfigurer corsConfigurer() {
