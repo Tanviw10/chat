@@ -15,8 +15,7 @@ public class AppUser {
     private String username;
     private String password;
 
-    public AppUser() {
-    }
+    public AppUser() {}
 
     public AppUser(Long id, String name, String pass) {
         this.id = id;

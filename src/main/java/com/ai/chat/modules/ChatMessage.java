@@ -21,13 +21,12 @@ public class ChatMessage {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private LocalDateTime orderCreatedAtAsc = LocalDateTime.now();
+    private LocalDateTime CreatedAt = LocalDateTime.now();
 
     @ManyToOne
     private AppUser user;
 
-    public ChatMessage() {
-    }
+    public ChatMessage() {}
 
     public ChatMessage(Long id, String role, String text, AppUser ap) {
         this.id = id;
@@ -61,11 +60,11 @@ public class ChatMessage {
     }
 
     public LocalDateTime getCreatedAt() {
-        return  orderCreatedAtAsc;
+        return  CreatedAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-        this. orderCreatedAtAsc = createdAt;
+        this. CreatedAt = createdAt;
     }
 
     public AppUser getUser() {
