@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password4j.BcryptPassword4jPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.ai.chat.Repository.UserRepository;
 import com.ai.chat.modules.AppUser;
@@ -69,6 +71,19 @@ public class SecurityConfig {
 		return provider;
 	}
 	
+	  @Bean
+	    public WebMvcConfigurer corsConfigurer() {
+	        return new WebMvcConfigurer() {
+	            @Override
+	            public void addCorsMappings(CorsRegistry registry) {
+	                registry.addMapping("/**")
+	                        .allowedOrigins("https://aichat-zufe.vercel.app")
+	                        .allowedMethods("*")
+	                        .allowedHeaders("*")
+	                        .allowCredentials(true);
+	            }
+	        };
+	    }
 	
 	
 }
