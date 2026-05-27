@@ -35,7 +35,7 @@ public class ChatController {
 		AppUser user =user_repo.findByUsername(principal.getName()).orElseThrow();
 	
 	
-	List<ChatMessage>history =chatrepo.findByOrderCreatedAtAsc(user);
+	List<ChatMessage>history =chatrepo.findByUserOrderByCreatedAtAsc(user);
 	ChatMessage userMsg=new ChatMessage();
 	userMsg.setRole("user");
 	userMsg.setContent(request.getMessage());
@@ -44,7 +44,9 @@ public class ChatController {
 	
 	String ai_reply=sarvamAiService.askSarvam(history,request.getMessage());
 	ChatMessage aiMsg=new ChatMessage();
-	aiMsg.setRole(ai_reply);
+
+	aiMsg.setRole("assistant");
+	aiMsg.setContent(ai_reply);
 	aiMsg.setUser(user);
 	chatrepo.save(aiMsg);
 	
@@ -55,7 +57,7 @@ public class ChatController {
 	@GetMapping("/history")
 	public List<ChatMessage>history(Principal principal){
 		AppUser user =user_repo.findByUsername(principal.getName()).orElseThrow();
-		return chatrepo.findByOrderCreatedAtAsc(user);
+		return chatrepo.findByUserOrderByCreatedAtAsc(user);
 	}
 	
 
